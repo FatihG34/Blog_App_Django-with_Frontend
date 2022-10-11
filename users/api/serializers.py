@@ -34,6 +34,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "profile_pic",
+            "biography",
             "password",
             "password1"
         )

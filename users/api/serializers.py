@@ -1,10 +1,13 @@
 from rest_framework import serializers, validators
-from django.conf import settings
+# from django.conf import settings
 from django.contrib.auth.password_validation import validate_password
 from dj_rest_auth.serializers import TokenSerializer
+from django.contrib.auth import get_user_model
+# from users.models import User
 
 
-User = settings.AUTH.USER_MODEL
+# User = settings.AUTH_USER_MODEL
+User = get_user_model()
 
 
 class RegisterSerializer(serializers.ModelSerializer):

@@ -80,6 +80,12 @@ class LikeSerializer(serializers.ModelSerializer):
             "user",
             "post"
         )
+    
+    # def create(self, validated_data):
+    #     print(self.context['request'].user)
+    #     if validated_data['user'] == self.context['request'].user:
+    #         print(validated_data)
+    #         return super().create(validated_data)
 
 
 class ViewSerializer(serializers.ModelSerializer):

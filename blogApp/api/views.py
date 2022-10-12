@@ -17,26 +17,26 @@ from .serializers import (
 )
 
 
-# class CategoryView(viewsets.ModelViewSet):
-class CategoryView(generics.ListCreateAPIView):
+# class CategoryView(generics.ListCreateAPIView):
+class CategoryView(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 
-class BlogPostUDView(viewsets.ModelViewSet):
+# class BlogPostView(generics.ListCreateAPIView):
+class BlogPostView(viewsets.ModelViewSet):
     queryset = BlogPost.objects.all()
     serializer_class = BlogPostSerializer
     lookup_field = "slug"
-
-# class BlogPostView(viewsets.ModelViewSet):
-class BlogPostView(generics.ListCreateAPIView):
-    queryset = BlogPost.objects.all()
-    serializer_class = BlogPostSerializer
 
 
 class LikeView(viewsets.ModelViewSet):
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
+
+    def create(self, request, *args, **kwargs):
+        
+        return super().create(request, *args, **kwargs)
 
 
 class CommentView(viewsets.ModelViewSet):

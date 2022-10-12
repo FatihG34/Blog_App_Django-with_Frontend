@@ -1,15 +1,18 @@
 from django.urls import path
 from rest_framework import routers
 
-from blogApp.api.views import CategoryView, BlogPostUDView
+from blogApp.api.views import CategoryView, LikeView, BlogPostView, CommentView, ViewView
 
 # router = routers.DynamicRoute()
 router = routers.DefaultRouter()
-router.register('posts', BlogPostUDView)
+router.register('posts', BlogPostView)
+router.register('category', CategoryView)
+router.register('comment', CommentView)
+router.register('view', ViewView)
+router.register('like', LikeView)
 
 
 urlpatterns = [
-    path("category", CategoryView.as_view()),
 
 ] 
 urlpatterns += router.urls

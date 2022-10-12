@@ -5,7 +5,7 @@ from blogApp.api.views import CategoryView, BlogPostUDView
 
 # router = routers.DynamicRoute()
 router = routers.DefaultRouter()
-router.register('blogs', BlogPostUDView)
+router.register('posts', BlogPostUDView)
 
 
 urlpatterns = [

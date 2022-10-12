@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework import generics
 from blogApp.models import (
     BlogPost,
     Category,
@@ -16,12 +17,19 @@ from .serializers import (
 )
 
 
-class CategoryView(viewsets.ModelViewSet):
+# class CategoryView(viewsets.ModelViewSet):
+class CategoryView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 
-class BlogPostView(viewsets.ModelViewSet):
+class BlogPostUDView(viewsets.ModelViewSet):
+    queryset = BlogPost.objects.all()
+    serializer_class = BlogPostSerializer
+    lookup_field = "slug"
+
+# class BlogPostView(viewsets.ModelViewSet):
+class BlogPostView(generics.ListCreateAPIView):
     queryset = BlogPost.objects.all()
     serializer_class = BlogPostSerializer
 

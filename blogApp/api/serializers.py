@@ -21,6 +21,7 @@ class BlogPostSerializer(serializers.ModelSerializer):
         model = BlogPost
         fields = (
             "id",
+            "title",
             "author",
             "category_id",
             "category",
@@ -28,7 +29,8 @@ class BlogPostSerializer(serializers.ModelSerializer):
             "image",
             "published_date",
             "updated_date",
-            "status"
+            "status",
+            "slug"
         )
         read_only_fields = (
             "published_date",

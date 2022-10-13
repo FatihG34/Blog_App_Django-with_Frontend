@@ -14,7 +14,8 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    user = serializers.StringRelatedField(read_only=True)  # kimin yorum yaptığını belirtmek için ilave edildi
+    # kimin yorum yaptığını belirtmek için ilave edildi
+    user = serializers.StringRelatedField(read_only=True)
     # user_id = serializers.IntegerField(read_only=True)  # kimin yorum yaptığını belirtmek için ilave edildi
 
     class Meta:
@@ -79,12 +80,6 @@ class LikeSerializer(serializers.ModelSerializer):
             "user",
             "post"
         )
-
-    # def create(self, validated_data):
-    #     print(self.context['request'].user)
-    #     if validated_data['user'] == self.context['request'].user:
-    #         print(validated_data)
-    #         return super().create(validated_data)
 
 
 class ViewSerializer(serializers.ModelSerializer):

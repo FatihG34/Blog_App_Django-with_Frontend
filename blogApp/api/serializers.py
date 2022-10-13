@@ -13,12 +13,35 @@ class CategorySerializer(serializers.ModelSerializer):
         )
 
 
+class CommentSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField(read_only=True)
+    user_id = serializers.IntegerField(read_only=True)
+    # blog = serializers.StringRelatedField()
+    # blog_id = serializers.IntegerField()
+
+    class Meta:
+        model = Comment
+        fields = (
+            "id",
+            "content",
+            "time_stamp",
+            "user",
+            "user_id",
+        )
+        # read_only_fields =(
+        #     "user",
+        #     "user_id"
+        # )
+
+
 class BlogPostSerializer(serializers.ModelSerializer):
+    post_comment = CommentSerializer(many=True, read_only=True)
     # category = serializers.StringRelatedField()
     # category_id = serializers.IntegerField()
     like_count = serializers.SerializerMethodField()
     comment_count = serializers.SerializerMethodField()
     post_view_count = serializers.SerializerMethodField()
+
     class Meta:
         model = BlogPost
         fields = (
@@ -36,11 +59,12 @@ class BlogPostSerializer(serializers.ModelSerializer):
             "like_count",
             "comment_count",
             "post_view_count",
+            "post_comment"
         )
         read_only_fields = (
             "published_date",
             "updated_date",
-            "slug" 
+            "slug",
         )
 
     def get_like_count(self, obj):
@@ -53,25 +77,6 @@ class BlogPostSerializer(serializers.ModelSerializer):
         return View.objects.filter(post=obj.id).count()
 
 
-class CommentSerialzer(serializers.ModelSerializer):
-    user = serializers.StringRelatedField()
-    user_id = serializers.IntegerField()
-    blog = serializers.StringRelatedField()
-    blog_id = serializers.IntegerField()
-
-    class Meta:
-        model = Comment
-        fields = (
-            "id",
-            "content",
-            "time_stamp",
-            "user",
-            "user_id",
-            "blog",
-            "blog_id"
-        )
-
-
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
@@ -80,7 +85,7 @@ class LikeSerializer(serializers.ModelSerializer):
             "user",
             "post"
         )
-    
+
     # def create(self, validated_data):
     #     print(self.context['request'].user)
     #     if validated_data['user'] == self.context['request'].user:

@@ -1,5 +1,7 @@
-from rest_framework import viewsets
-from rest_framework import generics
+from rest_framework import viewsets, generics, status
+from rest_framework.generics import  get_object_or_404
+from rest_framework.response import Response
+from rest_framework.exceptions import ValidationError
 from blogApp.models import (
     BlogPost,
     Category,
@@ -12,36 +14,56 @@ from .serializers import (
     CategorySerializer,
     BlogPostSerializer,
     LikeSerializer,
-    CommentSerialzer,
+    CommentSerializer,
     ViewSerializer
 )
 
 
-# class CategoryView(generics.ListCreateAPIView):
-class CategoryView(viewsets.ModelViewSet):
+class CategoryView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 
-# class BlogPostView(generics.ListCreateAPIView):
-class BlogPostView(viewsets.ModelViewSet):
+class BlogPostView(generics.ListCreateAPIView):
+    queryset = BlogPost.objects.all()
+    serializer_class = BlogPostSerializer
+    # lookup_field = "slug"
+
+
+class BlogPostDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = BlogPost.objects.all()
     serializer_class = BlogPostSerializer
     lookup_field = "slug"
 
 
-class LikeView(viewsets.ModelViewSet):
+class CommentView(generics.CreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+    def perform_create(self, serializer):
+        slug = self.kwargs.get('slug')
+        blog = get_object_or_404(BlogPost, slug=slug)
+        user = self.request.user
+        comments = Comment.objects.filter(blog=blog, user=user)
+        if comments.exists():
+            raise ValidationError(
+                "You can not add another comment, for this Post !")
+        serializer.save(blog=blog, user=user)
+
+
+class LikeView(generics.ListCreateAPIView):
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
 
-    def create(self, request, *args, **kwargs):
-        
-        return super().create(request, *args, **kwargs)
+    # def create(self, request, *args, **kwargs):
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     self.perform_create(serializer)
+    #     headers = self.get_success_headers(serializer.data)
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-
-class CommentView(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerialzer
+    # def perform_create(self, serializer):
+    #     serializer.save()
 
 
 class ViewView(viewsets.ModelViewSet):

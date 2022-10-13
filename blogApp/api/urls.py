@@ -14,6 +14,7 @@ from blogApp.api.views import CategoryView, LikeView, BlogPostView, BlogPostDeta
 urlpatterns = [
     path("category/", CategoryView.as_view()),
     path("posts/", BlogPostView.as_view()),
+    path("like/", LikeView.as_view()),
     path("posts/<str:slug>/", BlogPostDetailView.as_view()),
     path("posts/<str:slug>/add_comment/", CommentView.as_view()),
 

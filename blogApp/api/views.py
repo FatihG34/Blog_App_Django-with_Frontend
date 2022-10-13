@@ -1,3 +1,4 @@
+from urllib import request
 from rest_framework import viewsets, generics, status
 from rest_framework.generics import  get_object_or_404
 from rest_framework.response import Response
@@ -17,6 +18,9 @@ from .serializers import (
     CommentSerializer,
     ViewSerializer
 )
+from django.contrib.auth import get_user_model
+# User = settings.AUTH_USER_MODEL
+User = get_user_model()
 
 
 class CategoryView(generics.ListCreateAPIView):
@@ -55,15 +59,30 @@ class LikeView(generics.ListCreateAPIView):
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
 
-    # def create(self, request, *args, **kwargs):
-    #     serializer = self.get_serializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     self.perform_create(serializer)
-    #     headers = self.get_success_headers(serializer.data)
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    def create(self, request, *args, **kwargs):
+        print(request.data.get("user"))
+        user = request.data.get('user')
+        post = request.data.get('post')
+        serializer = self.get_serializer(data=request.data)
+        exists_like = Like.objects.filter(user=user, post=post)
+        serializer.is_valid(raise_exception=True)
+        if exists_like:
+            exists_like.delete()
+        else:
+            self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-    # def perform_create(self, serializer):
-    #     serializer.save()
+    def perform_create(self, serializer):
+    #     print(self.request)
+    #     slug = self.kwargs.get('slug')
+    #     blog = get_object_or_404(BlogPost, slug=slug)
+    #     user = self.request.user
+    #     likes = Like.objects.filter(post=blog, user=user)
+    #     if likes:
+    #         likes.delete()
+        # serializer.save(post=blog, user=user)
+        serializer.save()
 
 
 class ViewView(viewsets.ModelViewSet):

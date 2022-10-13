@@ -1,6 +1,6 @@
 from urllib import request
 from rest_framework import viewsets, generics, status
-from rest_framework.generics import  get_object_or_404
+from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from blogApp.models import (
@@ -60,7 +60,6 @@ class LikeView(generics.ListCreateAPIView):
     serializer_class = LikeSerializer
 
     def create(self, request, *args, **kwargs):
-        print(request.data.get("user"))
         user = request.data.get('user')
         post = request.data.get('post')
         serializer = self.get_serializer(data=request.data)
@@ -72,17 +71,6 @@ class LikeView(generics.ListCreateAPIView):
             self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-    def perform_create(self, serializer):
-    #     print(self.request)
-    #     slug = self.kwargs.get('slug')
-    #     blog = get_object_or_404(BlogPost, slug=slug)
-    #     user = self.request.user
-    #     likes = Like.objects.filter(post=blog, user=user)
-    #     if likes:
-    #         likes.delete()
-        # serializer.save(post=blog, user=user)
-        serializer.save()
 
 
 class ViewView(viewsets.ModelViewSet):

@@ -15,6 +15,7 @@ from .serializers import (
     BlogPostSerializer,
     LikeSerializer,
     CommentSerializer,
+    PostUserSerializer,
     # ViewSerializer
 )
 from .pagination import CustomLimitOffsetPagination
@@ -78,3 +79,7 @@ class LikeView(generics.ListCreateAPIView):
             self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+class PostUserView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = PostUserSerializer

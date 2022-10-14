@@ -2,7 +2,8 @@ from dataclasses import fields
 from rest_framework import serializers
 
 from blogApp.models import BlogPost, Category, Comment, Like, View
-
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -90,4 +91,20 @@ class ViewSerializer(serializers.ModelSerializer):
             "post",
             "user",
             "view_time"
+        )
+
+
+class PostUserSerializer(serializers.ModelSerializer):
+    # user_posts = serializers.SerializerMetaclass(BlogPost,)
+    # user_posts = BlogPostSerializer(many=True, read_only=True)
+    class Meta:
+        model = User
+        fields = (
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "profile_pic",
+            "biography",
+            # "user_posts"
         )

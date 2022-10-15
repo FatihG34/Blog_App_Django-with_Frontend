@@ -1,12 +1,13 @@
 from rest_framework import generics, status
-from django.conf import settings
-from users.api.serializers import RegisterSerializer
+from users.api.serializers import RegisterSerializer, UpdateUserSerializer
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from users.models import User
 from django.contrib.auth import get_user_model
-# User = settings.AUTH_USER_MODEL
 User = get_user_model()
+
+# from django.conf import settings
+# User = settings.AUTH_USER_MODEL
 
 
 class RegisterView(generics.CreateAPIView):
@@ -25,3 +26,8 @@ class RegisterView(generics.CreateAPIView):
             data['error'] = 'User does not have token . Try again ...'
         headers = self.get_success_headers(serializer.data)
         return Response(data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class UpdateUserView(generics.RetrieveUpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UpdateUserSerializer

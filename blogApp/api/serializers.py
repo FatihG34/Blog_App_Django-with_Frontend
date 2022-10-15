@@ -32,11 +32,14 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class LikeSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField()
+    user_id = serializers.IntegerField()
     class Meta:
         model = Like
         fields = (
             "id",
             "user",
+            "user_id",
             "post"
         )
 

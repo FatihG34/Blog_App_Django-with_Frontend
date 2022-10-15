@@ -1,5 +1,4 @@
-from urllib import request
-from rest_framework import viewsets, generics, status
+from rest_framework import generics, status
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
@@ -18,10 +17,9 @@ from .serializers import (
     PostUserSerializer,
     # ViewSerializer
 )
+from rest_framework import permissions
 from .pagination import CustomLimitOffsetPagination
 from .permissions import IsPostOwnerOrReadOnly, IsAdminUserOrReadOnly
-from rest_framework.pagination import CursorPagination, LimitOffsetPagination
-from rest_framework import permissions
 from django.contrib.auth import get_user_model
 # User = settings.AUTH_USER_MODEL
 User = get_user_model()
@@ -49,7 +47,8 @@ class BlogPostDetailView(generics.RetrieveUpdateDestroyAPIView):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
-        View.objects.get_or_create(user=request.user, post=instance)
+        # View.objects.get_or_create(user=request.user, post=instance)
+        View.objects.create(user=request.user, post=instance)
         return Response(serializer.data)
 
 

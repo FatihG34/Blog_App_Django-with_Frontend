@@ -23,7 +23,7 @@ urlpatterns = [
     path("like/", LikeView.as_view()),
     path("posts/<str:slug>/", BlogPostDetailView.as_view()),
     path("posts/<str:slug>/add_comment/", CommentView.as_view()),
-    path("post-user/", PostUserView.as_view()),
+    # path("post-user/", PostUserView.as_view()),
 
 ]
 # urlpatterns += router.urls

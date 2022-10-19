@@ -43,8 +43,8 @@ INSTALLED_APPS = [
     "drf_yasg",
     'rest_framework.authtoken',
     'dj_rest_auth',
-    
-    # my apps 
+    "corsheaders",
+    # my apps
     "blogApp",
     "users",
 ]
@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -143,3 +144,13 @@ REST_FRAMEWORK = {
 REST_AUTH_SERIALIZERS = {
     'TOKEN_SERIALIZER': 'users.api.serializers.CustomTokenSerializer',
 }
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]

@@ -37,6 +37,9 @@ class BlogPostView(generics.ListCreateAPIView):
     pagination_class = CustomLimitOffsetPagination
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
 
 class BlogPostDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = BlogPost.objects.all()
@@ -84,6 +87,7 @@ class LikeView(generics.ListCreateAPIView):
             self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
 class PostUserView(generics.ListAPIView):
     queryset = User.objects.all()

@@ -34,6 +34,7 @@ class CommentSerializer(serializers.ModelSerializer):
 class LikeSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
     user_id = serializers.IntegerField()
+
     class Meta:
         model = Like
         fields = (
@@ -76,6 +77,7 @@ class BlogPostSerializer(serializers.ModelSerializer):
         read_only_fields = (
             "published_date",
             "updated_date",
+            "author",
             "slug",
         )
 

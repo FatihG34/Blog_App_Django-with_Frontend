@@ -41,7 +41,7 @@ class LikeSerializer(serializers.ModelSerializer):
             "id",
             "user",
             "user_id",
-            # "post"
+            "post"
         )
 
 

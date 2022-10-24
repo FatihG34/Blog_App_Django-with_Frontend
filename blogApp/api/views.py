@@ -45,7 +45,7 @@ class BlogPostDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = BlogPost.objects.all()
     serializer_class = BlogPostSerializer
     lookup_field = "slug"
-    # permission_classes = [IsPostOwnerOrReadOnly]
+    permission_classes = [IsPostOwnerOrReadOnly]
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -97,10 +97,10 @@ class LikeView(generics.ListCreateAPIView):
     #     return super().perform_create(serializer)
 
     def create(self, request, *args, **kwargs):
-        user = request.data.get('user')
+        user = request.data.get('user_id')
         post = request.data.get('post')
         serializer = self.get_serializer(data=request.data)
-        exists_like = Like.objects.filter(user=user, post=post)
+        exists_like = Like.objects.filter(user_id=user, post=post)
         serializer.is_valid(raise_exception=True)
         if exists_like:
             exists_like.delete()

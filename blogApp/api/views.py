@@ -1,3 +1,4 @@
+from urllib import request
 from rest_framework import generics, status
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
@@ -39,6 +40,17 @@ class BlogPostView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+
+class UserAllPosts(generics.ListAPIView):
+    queryset = BlogPost.objects.all()
+    serializer_class = BlogPostSerializer
+    permission_classes = [IsPostOwnerOrReadOnly]
+
+    def get_queryset(self):
+        author = self.request.user
+        queryset = BlogPost.objects.filter(author=author)
+        return queryset
 
 
 class BlogPostDetailView(generics.RetrieveUpdateDestroyAPIView):

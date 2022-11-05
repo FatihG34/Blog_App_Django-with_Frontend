@@ -104,3 +104,4 @@ class LikeView(generics.ListCreateAPIView):
 class PostUserView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = PostUserSerializer
+    permission_classes = [permissions.IsAuthenticated]

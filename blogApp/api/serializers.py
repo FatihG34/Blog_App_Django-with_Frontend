@@ -91,11 +91,11 @@ class BlogPostSerializer(serializers.ModelSerializer):
 
 
 class PostUserSerializer(serializers.ModelSerializer):
-    # user_posts = serializers.SerializerMetaclass(BlogPost,)
     # user_posts = BlogPostSerializer(many=True, read_only=True)
     class Meta:
         model = User
         fields = (
+            "id",
             "username",
             "first_name",
             "last_name",
